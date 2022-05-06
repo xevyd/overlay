@@ -66,7 +66,8 @@ def overlay(params):
     proc = subprocess.call(cmd, shell=True)
 
 
-config = read_config().defaults()
+
+config = read_config('/mnt/scripts/overlay/overlay.conf').defaults()
 start_time = time.time()
 logging.basicConfig(filename=config['log'], level=logging.INFO, format='%(asctime)s %(levelname)-8s %(message)s')
 logging.info("start encoding {0}".format(start_time))

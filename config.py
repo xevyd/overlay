@@ -21,10 +21,10 @@ def init_config():
         print('Error create config file!')
         
 
-def read_config():
+def read_config(file=CONFIG_FILE):
     conf = configparser.ConfigParser()
     try:
-        conf.read_file(open(CONFIG_FILE))
+        conf.read_file(open(file))
         return conf
 
     except:
