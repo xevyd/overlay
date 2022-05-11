@@ -72,21 +72,27 @@ start_time = time.time()
 logging.basicConfig(filename=config['log'], level=logging.INFO, format='%(asctime)s %(levelname)-8s %(message)s')
 logging.info("start encoding {0}".format(start_time))
 
-for item in get_zips(config['list']):
-    filename, fileext = os.path.splitext(item['name'])
-    params = {
-        'src': os.path.join(config['src'], item['name']),
-        'dst': os.path.join(config['dst'], filename + ' ' + item['age'] + fileext),
-        'overlay': os.path.join(config['overlay'], overlay_file(item)),
-    }
+zips_list = get_zips(config['list'])
 
-    if not os.path.exists(params['overlay']):
-        logging.error('No such file: ' + params['overlay'])
-        continue
+if zips_list != '':
+    for item in zips_list:
+        filename, fileext = os.path.splitext(item['name'])
+        params = {
+            'src': os.path.join(config['src'], item['name']),
+            'dst': os.path.join(config['dst'], filename + ' ' + item['age'] + fileext),
+            'overlay': os.path.join(config['overlay'], overlay_file(item)),
+        }
 
-    if os.path.exists(params['src']) and not os.path.exists(params['dst']):
-        item_encode_start_time = time.time()
-        overlay(params)
-        logging.info(item['name'] + ' ' + get_duration(params['src'])  + ' ЗИП: ' + overlay_file(item) + ' encoded in {0}'.format(time.time() - item_encode_start_time) + ' seconds')
+        if not os.path.exists(params['overlay']):
+            logging.error('No such file: ' + params['overlay'])
+            continue
+
+        if os.path.exists(params['src']) and not os.path.exists(params['dst']):
+            item_encode_start_time = time.time()
+            overlay(params)
+            logging.info(item['name'] + ' ' + get_duration(params['src'])  + ' ЗИП: ' + overlay_file(item) + ' encoded in {0}'.format(time.time() - item_encode_start_time) + ' seconds')
+
+else:
+    logging.info('empty list')
 
 logging.info("finally {0}\n".format(time.time() - start_time))
