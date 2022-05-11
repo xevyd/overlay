@@ -80,6 +80,10 @@ for item in get_zips(config['list']):
         'overlay': os.path.join(config['overlay'], overlay_file(item)),
     }
 
+    if not os.path.exists(params['overlay']):
+        logging.error('No such file: ' + params['overlay'])
+        continue
+
     if os.path.exists(params['src']) and not os.path.exists(params['dst']):
         item_encode_start_time = time.time()
         overlay(params)
