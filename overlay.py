@@ -11,7 +11,7 @@ def get_zips(xlsFile):
     if os.path.exists(xlsFile):
         try:
             xlsx = pd.ExcelFile(xlsFile)
-            data = xlsx.parse(xlsx.sheet_names[-1], na_values=['0'], names=['name','age','smoke','social'])
+            data = xlsx.parse(xlsx.sheet_names[-1], header=None, na_values=['0'], names=['name','age','smoke','social'])
             data['age'] = data['age'].str.replace(' ', '')
 
             return data.to_dict(orient='records')
@@ -73,6 +73,7 @@ logging.basicConfig(filename=config['log'], level=logging.INFO, format='%(asctim
 logging.info("start encoding {0}".format(start_time))
 
 zips_list = get_zips(config['list'])
+print(zips_list[0])
 
 if zips_list != '':
     for item in zips_list:

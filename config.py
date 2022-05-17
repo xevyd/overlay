@@ -5,7 +5,7 @@ CONFIG_FILE = 'overlay.conf'
 def init_config():
     try:
         conf = configparser.ConfigParser()
-        conf['default'] = {'src': 'src',
+        conf['DEFAULT'] = {'src': 'src',
                            'dst': 'dst',
                            'overlay': 'overlay',
                            'list': 'zip.xlsx',
