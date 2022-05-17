@@ -73,7 +73,6 @@ logging.basicConfig(filename=config['log'], level=logging.INFO, format='%(asctim
 logging.info("start encoding {0}".format(start_time))
 
 zips_list = get_zips(config['list'])
-print(zips_list[0])
 
 if zips_list != '':
     for item in zips_list:
