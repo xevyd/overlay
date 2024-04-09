@@ -73,6 +73,8 @@ def overlay(params):
 
 
 def mount_content():
+    if not os.path.exists(config['dst']):
+        os.makedirs(config['dst'])
     os.system("mount -t cifs -o username={},password={},iocharset=utf8 {} {}".format(
         config['content_user'], config['content_password'], config['content'], config['src']))
 
