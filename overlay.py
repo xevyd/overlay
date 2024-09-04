@@ -6,7 +6,6 @@ import subprocess
 import pandas as pd
 from config import read_config
 
-
 def get_zips(xls_file):
     if os.path.exists(xls_file):
         try:
@@ -24,25 +23,22 @@ def get_zips(xls_file):
     else:
         return ''
 
-
 def overlay_file(item):
     name = ''
     if item['age'] != '':
         name += item['age']
-    if str(item['smoke']) != '':
+    if str(item['smoke']) != 'nan':
         name += 'smoke'
     if str(item['social']) != 'nan':
         name += '_sn'
 
     return name + '.mov'
 
-
 def get_duration(filename):
     cmd = ['ffprobe', '-i', filename]
     result = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
     return str([x for x in result.stdout.readlines() if "Duration" in str(x)][-1].strip()).split(' ')[1].split(',')[0]
-
 
 def get_resolution(file_name):
     cmd = ['ffprobe', '-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=width,height', '-of',
@@ -51,13 +47,10 @@ def get_resolution(file_name):
 
     return str(result.stdout).split("'")[1].replace('\\n', '').split('x')
 
-
 def overlay(params):
     resolution = get_resolution(params['src'])
     cmd = '/usr/bin/ffmpeg -y -hwaccel cuda -i "{}" -vcodec h264_nvenc -c:s copy -vf "movie={}'\
           .format(params['src'], params['overlay'])
-    # cmd = '/usr/bin/ffmpeg -y -hwaccel cuda -i "' + params['src'] + '" -vcodec h264_nvenc -c:s copy -vf "movie=' + params['overlay']
-    # cmd = '/usr/local/bin/ffmpeg -y -i "' + params['src'] + '" -vcodec h264_nvenc -c:s copy -vf "movie=' + params['overlay']
 
     if ['1280', '720'] == resolution:
         cmd += ',setpts=PTS-STARTPTS+5/TB [inner]; [in][inner] overlay [out]" -b:v 8M -b:a 400k '
@@ -82,7 +75,6 @@ config = read_config('/srv/overlay/overlay.conf').defaults()
 start_time = time.time()
 logging.basicConfig(filename=config['log'], level=logging.INFO, format='%(asctime)s %(levelname)-8s %(message)s')
 logging.info("start encoding {0}".format(start_time))
-
 zips_list = get_zips(config['list'])
 
 if zips_list != '':
