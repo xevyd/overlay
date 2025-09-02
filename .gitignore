@@ -5,7 +5,4 @@ zip_01
 zip_02
 log.txt
 log.txt.old
-dest.conf
-folders.conf
-overlay.py.orig
 __pycache__
