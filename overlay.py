@@ -45,7 +45,7 @@ def get_resolution(file_name):
            'csv=s=x:p=0', '-i', file_name.encode('utf-8')]
     result = subprocess.run(cmd, stdout=subprocess.PIPE)
 
-    return str(result.stdout).split("'")[1].replace('\\n', '').split('x')
+    return str(result.stdout).split("'")[1].replace('\\n', '').split('x')[:2]
 
 def overlay(params):
     resolution = get_resolution(params['src'])
